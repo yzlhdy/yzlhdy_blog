@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"yzlhdy_blog/dto"
@@ -30,10 +31,12 @@ func NewAuthController(authService service.AuthService, jwtService service.JwtSe
 
 func (c *authController) Login(ctx *gin.Context) {
 	var loginForm dto.LoginDTO
+
 	ctx.ShouldBind(&loginForm)
 	valid, err := helper.BindAndValid(ctx, &loginForm)
+	fmt.Println(valid)
 	if !valid {
-		response := helper.BuildErrorResponse(401, "参数错误", helper.EmptyObj{}, err)
+		response := helper.BuildErrorResponse(403, "参数错误", helper.EmptyObj{}, err)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -51,6 +54,7 @@ func (c *authController) Login(ctx *gin.Context) {
 
 func (c *authController) Register(ctx *gin.Context) {
 	var registerForm dto.UserCreateDto
+
 	ctx.ShouldBind(&registerForm)
 	valid, err := helper.BindAndValid(ctx, &registerForm)
 	if !valid {
