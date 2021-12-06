@@ -16,12 +16,12 @@ import (
 var (
 	db             *gorm.DB                  = config.SetUpDatabaseConnection()
 	userRepository repository.UserRepository = repository.NewUserRepository(db)
-	// userService    service.UserService       = service.NewUserService(userRepository)
-	jwtService  service.JwtService  = service.NewJwtService()
-	authService service.AuthService = service.NewAuthService(userRepository)
+	userService    service.UserService       = service.NewUserService(userRepository)
+	jwtService     service.JwtService        = service.NewJwtService()
+	authService    service.AuthService       = service.NewAuthService(userRepository)
 
 	authController controller.AuthController = controller.NewAuthController(authService, jwtService)
-	// userController controller.UserController = controller.NewUserController(userService, jwtService)
+	userController controller.UserController = controller.NewUserController(userService, jwtService)
 )
 
 func main() {
@@ -36,6 +36,12 @@ func main() {
 	{
 		authRoutes.POST("/login", authController.Login)
 		authRoutes.POST("/register", authController.Register)
+	}
+	userRoutes := route.Group("api/user")
+	{
+		userRoutes.GET("/", userController.FindUser)
+		userRoutes.DELETE("/:id", userController.DeleteUser)
+		userRoutes.PUT("/:id", userController.UpdateUser)
 	}
 	route.Run(":" + serviceHost)
 }

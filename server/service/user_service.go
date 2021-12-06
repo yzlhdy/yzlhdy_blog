@@ -2,6 +2,7 @@ package service
 
 import (
 	"log"
+	"yzlhdy_blog/dto"
 	"yzlhdy_blog/entity"
 	"yzlhdy_blog/repository"
 
@@ -10,7 +11,7 @@ import (
 
 type UserService interface {
 	FindUser(page int, limit int) []entity.User
-	UpdateUser(user entity.User) entity.User
+	UpdateUser(id int, user dto.UserUpdateDto) entity.User
 	DeleteUser(id int) entity.User
 }
 
@@ -26,13 +27,13 @@ func (u *userService) FindUser(page int, limit int) []entity.User {
 	return u.userRepo.FindUser(page, limit)
 }
 
-func (u *userService) UpdateUser(user entity.User) entity.User {
+func (u *userService) UpdateUser(id int, user dto.UserUpdateDto) entity.User {
 	userData := entity.User{}
 	err := smapping.FillStruct(&userData, smapping.MapFields(&user))
 	if err != nil {
 		log.Fatalf("Failed map %v", err)
 	}
-	updateUser := u.userRepo.UpdateUser(userData)
+	updateUser := u.userRepo.UpdateUser(id, userData)
 	return updateUser
 }
 

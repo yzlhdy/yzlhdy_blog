@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"log"
 	"yzlhdy_blog/dto"
 	"yzlhdy_blog/entity"
@@ -30,10 +31,9 @@ func NewAuthService(userRep repository.UserRepository) AuthService {
 
 func comparePassword(hash string, plainPassword []byte) bool {
 	byteHash := []byte(hash)
-
 	err := bcrypt.CompareHashAndPassword(byteHash, plainPassword)
 	if err != nil {
-		log.Panic(err)
+		fmt.Println(err)
 		return false
 	}
 	return true
@@ -46,8 +46,9 @@ func (service *authService) VerifyCredential(email string, password string) inte
 		compare := comparePassword(v.Password, []byte(password))
 		if v.Email == email && compare {
 			return res
+		} else {
+			return false
 		}
-		return false
 	}
 	return false
 }

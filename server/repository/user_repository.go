@@ -11,7 +11,7 @@ import (
 type UserRepository interface {
 	FindUser(page int, limit int) []entity.User
 	InsertUser(user entity.User) entity.User
-	UpdateUser(user entity.User) entity.User
+	UpdateUser(id int, user entity.User) entity.User
 	DeleteUser(id int) entity.User
 	VerifyCredential(email string, password string) interface{}
 	IsDuplicateEmail(email string) (tx *gorm.DB)
@@ -38,7 +38,7 @@ func hashAndSalt(pwd []byte) string {
 
 func (db *userRepository) FindUser(page int, limit int) []entity.User {
 	var users []entity.User
-	db.connection.Limit(limit).Offset(page).Find(&users)
+	db.connection.Limit(limit).Offset(page - 1).Find(&users)
 	return users
 }
 
@@ -48,9 +48,14 @@ func (db *userRepository) InsertUser(user entity.User) entity.User {
 	return user
 }
 
-func (db *userRepository) UpdateUser(user entity.User) entity.User {
-	user.Password = hashAndSalt([]byte(user.Password))
-	db.connection.Create(&user)
+func (db *userRepository) UpdateUser(id int, user entity.User) entity.User {
+	if user.Password != "" {
+		user.Password = hashAndSalt([]byte(user.Password))
+	} else {
+		var userOld entity.User
+		db.connection.First(&userOld, id)
+	}
+	db.connection.Save(&user)
 	return user
 }
 
