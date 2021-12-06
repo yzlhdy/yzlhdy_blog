@@ -28,14 +28,14 @@ func NewAuthService(userRep repository.UserRepository) AuthService {
 	}
 }
 
-func comparePassword(hashedPassword string, plainPassword []byte) bool {
-	byteHash := []byte(hashedPassword)
+func comparePassword(hash string, plainPassword []byte) bool {
+	byteHash := []byte(hash)
+
 	err := bcrypt.CompareHashAndPassword(byteHash, plainPassword)
 	if err != nil {
 		log.Panic(err)
 		return false
 	}
-
 	return true
 }
 
@@ -43,11 +43,11 @@ func comparePassword(hashedPassword string, plainPassword []byte) bool {
 func (service *authService) VerifyCredential(email string, password string) interface{} {
 	res := service.userRepo.VerifyCredential(email, password)
 	if v, ok := res.(entity.User); ok {
-		compre := comparePassword(v.Password, []byte(password))
-		if v, ok := res.(entity.User); ok && compre {
-			return v
+		compare := comparePassword(v.Password, []byte(password))
+		if v.Email == email && compare {
+			return res
 		}
-		return res
+		return false
 	}
 	return false
 }

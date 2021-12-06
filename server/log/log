@@ -38,3 +38,8 @@ time="2021-12-06T19:08:46+08:00" level=info client_ip="::1" data_size=459 hostna
 time="2021-12-06T19:09:02+08:00" level=warning client_ip="::1" data_size=181 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/login spend_time="1 ms" status=400 user_agent=PostmanRuntime/7.28.4
 time="2021-12-06T19:09:35+08:00" level=warning client_ip="::1" data_size=181 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/login spend_time="10 ms" status=400 user_agent=PostmanRuntime/7.28.4
 time="2021-12-06T19:09:51+08:00" level=warning client_ip="::1" data_size=181 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/login spend_time="1 ms" status=400 user_agent=PostmanRuntime/7.28.4
+time="2021-12-06T19:31:35+08:00" level=warning client_ip="::1" data_size=68 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/register spend_time="7 ms" status=400 user_agent=PostmanRuntime/7.28.4
+time="2021-12-06T19:31:49+08:00" level=info client_ip="::1" data_size=460 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/register spend_time="29 ms" status=200 user_agent=PostmanRuntime/7.28.4
+time="2021-12-06T19:36:23+08:00" level=info client_ip="::1" data_size=315 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/login spend_time="3 ms" status=200 user_agent=PostmanRuntime/7.28.4
+time="2021-12-06T19:37:13+08:00" level=info client_ip="::1" data_size=315 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/login spend_time="2 ms" status=200 user_agent=PostmanRuntime/7.28.4
+time="2021-12-06T19:37:44+08:00" level=info client_ip="::1" data_size=315 hostname=DESKTOP-VL3JSDS method=POST path=/api/auth/login spend_time="33 ms" status=200 user_agent=PostmanRuntime/7.28.4

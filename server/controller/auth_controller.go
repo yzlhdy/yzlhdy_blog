@@ -44,7 +44,8 @@ func (c *authController) Login(ctx *gin.Context) {
 	if v, ok := res.(entity.User); ok {
 		genToken := c.jwtService.GenerateToken(strconv.FormatUint(uint64(v.ID), 10))
 		v.Token = genToken
-		response := helper.BuildResponse(200, "登录成功", res)
+		fmt.Println(genToken)
+		response := helper.BuildResponse(200, "登录成功", v)
 		ctx.JSON(http.StatusOK, response)
 		return
 	}
