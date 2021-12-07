@@ -47,6 +47,7 @@ func (db *classificationRepository) DeleteClassification(id int) entity.Classifi
 	db.connection.Where("id = ?", id).Delete(&fiction)
 	return fiction
 }
+
 func (db *classificationRepository) AllClassification(page int, limit int) ([]entity.Classification, int64) {
 	classifications := []entity.Classification{}
 	var total int64

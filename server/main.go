@@ -29,6 +29,7 @@ var (
 	authController  controller.AuthController           = controller.NewAuthController(authService, jwtService)
 	userController  controller.UserController           = controller.NewUserController(userService, jwtService)
 	classController controller.ClassificationController = controller.NewClassificationController(classiService)
+
 	// article
 	articleController controller.ArticleController = controller.NewArticleController(articleService)
 )

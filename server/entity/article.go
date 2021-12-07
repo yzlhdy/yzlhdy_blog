@@ -2,10 +2,10 @@ package entity
 
 type Article struct {
 	Model
-	Title          string `json:"title" type:"varchar(100)"`
-	SubTitle       string `json:"sub_title" type:"varchar(100)"`
-	Content        string `json:"content" type:"text"`
-	Image          string `json:"image" type:"varchar(100)"`
-	Cid            int    `json:"cid" type:"int"`
-	Classification Classification
+	Title          string         `gorm:"type:varchar(255)" json:"title"`
+	SubTitle       string         `gorm:"type:varchar(255)" json:"sub_title" `
+	Content        string         `gorm:"type:text" json:"content"`
+	Image          string         `gorm:"type:varchar(255)" json:"image"`
+	Cid            int            `json:"cid"`
+	Classification Classification `gorm:"foreignkey:Cid" json:"classification"`
 }
