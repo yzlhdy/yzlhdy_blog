@@ -53,6 +53,7 @@ func main() {
 		userRoutes.DELETE("/:id", userController.DeleteUser)
 		userRoutes.PUT("", userController.UpdateUser)
 	}
+
 	// 分类
 	classRoutes := route.Group("api/classification")
 	{

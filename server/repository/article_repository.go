@@ -11,6 +11,7 @@ type ArticleRepository interface {
 	DeleteArticle(articleId int) entity.Article
 	UpdateArticle(id int, article entity.Article) entity.Article
 	AllArticle(page int, limit int) ([]entity.Article, int64)
+	FndArticle(id int) entity.Article
 }
 
 type articleRepository struct {
@@ -52,4 +53,11 @@ func (r *articleRepository) AllArticle(page int, limit int) ([]entity.Article, i
 	var count int64
 	r.connection.Preload("Classification").Offset((page - 1) * limit).Limit(limit).Find(&articles).Count(&count)
 	return articles, count
+}
+
+// 查询文章
+func (r *articleRepository) FndArticle(id int) entity.Article {
+	var article entity.Article
+	r.connection.First(&article, id)
+	return article
 }
