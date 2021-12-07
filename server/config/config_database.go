@@ -33,7 +33,7 @@ func SetUpDatabaseConnection() *gorm.DB {
 	if err != nil {
 		log.Panic("数据库连接失败", err)
 	}
-	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.User{}, &entity.Classification{}, &entity.Article{})
 	return db
 }
 
@@ -43,5 +43,4 @@ func CloseDatabase(db *gorm.DB) {
 		fmt.Println("database close to form ")
 	}
 	dbSql.Close()
-
 }

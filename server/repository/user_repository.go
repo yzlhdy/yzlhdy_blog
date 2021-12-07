@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"log"
 	"yzlhdy_blog/entity"
 
@@ -11,7 +12,7 @@ import (
 type UserRepository interface {
 	FindUser(page int, limit int) []entity.User
 	InsertUser(user entity.User) entity.User
-	UpdateUser(id int, user entity.User) entity.User
+	UpdateUser(user entity.User) entity.User
 	DeleteUser(id int) entity.User
 	VerifyCredential(email string, password string) interface{}
 	IsDuplicateEmail(email string) (tx *gorm.DB)
@@ -48,15 +49,14 @@ func (db *userRepository) InsertUser(user entity.User) entity.User {
 	return user
 }
 
-func (db *userRepository) UpdateUser(id int, user entity.User) entity.User {
+func (db *userRepository) UpdateUser(user entity.User) entity.User {
 	if user.Password != "" {
 		user.Password = hashAndSalt([]byte(user.Password))
-	} else {
-		var userOld entity.User
-		db.connection.First(&userOld, id)
 	}
-	db.connection.Save(&user)
-	return user
+	var userOld entity.User
+	fmt.Println(user)
+	db.connection.Model(userOld).Where("id = ?", user.ID).Updates(user)
+	return userOld
 }
 
 // func (db *userRepository) FindUserById(id int) entity.User {

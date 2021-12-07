@@ -39,13 +39,7 @@ func (c *userController) FindUser(ctx *gin.Context) {
 
 func (c *userController) UpdateUser(ctx *gin.Context) {
 	var userDto dto.UserUpdateDto
-	id, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		response := helper.BuildResponse(400, "参数错误", err.Error())
-		ctx.JSON(http.StatusBadRequest, response)
-		return
 
-	}
 	ctx.ShouldBind(&userDto)
 	valide, err := helper.BindAndValid(ctx, &userDto)
 	if !valide {
@@ -53,8 +47,15 @@ func (c *userController) UpdateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
-	res := c.userService.UpdateUser(id, userDto)
-	response := helper.BuildResponse(200, "success", res)
+	// authHeader := ctx.GetHeader("Authorization")
+	// token, errToken := c.jwtService.ValidateToken(authHeader)
+	// if errToken != nil {
+	// 	panic(errToken.Error())
+	// }
+	// clims := token.Claims.(jwt.MapClaims)
+	// id, err := strconv.ParseUint(fmt.Sprintf("%v", clims["user_id"]), 10, 64)
+	c.userService.UpdateUser(userDto)
+	response := helper.BuildResponse(200, "success", "成功")
 	ctx.JSON(http.StatusOK, response)
 }
 

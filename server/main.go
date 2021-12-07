@@ -14,14 +14,23 @@ import (
 )
 
 var (
-	db             *gorm.DB                  = config.SetUpDatabaseConnection()
-	userRepository repository.UserRepository = repository.NewUserRepository(db)
-	userService    service.UserService       = service.NewUserService(userRepository)
-	jwtService     service.JwtService        = service.NewJwtService()
-	authService    service.AuthService       = service.NewAuthService(userRepository)
+	db              *gorm.DB                            = config.SetUpDatabaseConnection()
+	userRepository  repository.UserRepository           = repository.NewUserRepository(db)
+	userService     service.UserService                 = service.NewUserService(userRepository)
+	jwtService      service.JwtService                  = service.NewJwtService()
+	authService     service.AuthService                 = service.NewAuthService(userRepository)
+	classRepository repository.ClassificationRepository = repository.NewClassificationRepository(db)
+	classiService   service.ClassificationService       = service.NewClassificationService(classRepository)
+	// article
+	articleRepo    repository.ArticleRepository = repository.NewArticleRepository(db)
+	articleService service.ArticleService       = service.NewArticleService(articleRepo)
 
-	authController controller.AuthController = controller.NewAuthController(authService, jwtService)
-	userController controller.UserController = controller.NewUserController(userService, jwtService)
+	// controller
+	authController  controller.AuthController           = controller.NewAuthController(authService, jwtService)
+	userController  controller.UserController           = controller.NewUserController(userService, jwtService)
+	classController controller.ClassificationController = controller.NewClassificationController(classiService)
+	// article
+	articleController controller.ArticleController = controller.NewArticleController(articleService)
 )
 
 func main() {
@@ -37,11 +46,28 @@ func main() {
 		authRoutes.POST("/login", authController.Login)
 		authRoutes.POST("/register", authController.Register)
 	}
-	userRoutes := route.Group("api/user")
+	userRoutes := route.Group("api/user", middleware.AuthorizeJWT(jwtService))
 	{
 		userRoutes.GET("/", userController.FindUser)
 		userRoutes.DELETE("/:id", userController.DeleteUser)
-		userRoutes.PUT("/:id", userController.UpdateUser)
+		userRoutes.PUT("", userController.UpdateUser)
+	}
+	// 分类
+	classRoutes := route.Group("api/classification")
+	{
+		classRoutes.GET("/:id", classController.FindClassificationById)
+		classRoutes.GET("/list", classController.AllClassification)
+		classRoutes.POST("", classController.InsertClassification)
+		classRoutes.PUT("/:id", classController.UpdateClassification)
+		classRoutes.DELETE("/:id", classController.DeleteClassification)
+	}
+	// 文章
+	articleRoutes := route.Group("api/article")
+	{
+		articleRoutes.GET("", articleController.AllArticle)
+		articleRoutes.POST("", articleController.CreateArticle)
+		articleRoutes.PUT("/:id", articleController.UpdateArticle)
+		articleRoutes.DELETE("/:id", articleController.DeleteArticle)
 	}
 	route.Run(":" + serviceHost)
 }

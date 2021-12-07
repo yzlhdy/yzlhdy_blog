@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -42,8 +43,9 @@ func (j *jwtService) GenerateToken(UserID string) string {
 	claims := &jwtCustomClaim{
 		UserId: UserID,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: 15000,
+			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
 			Issuer:    j.issuer,
+			IssuedAt:  time.Now().Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

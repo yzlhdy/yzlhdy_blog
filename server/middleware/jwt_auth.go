@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"yzlhdy_blog/helper"
@@ -20,6 +21,7 @@ func AuthorizeJWT(jwtService service.JwtService) gin.HandlerFunc {
 			return
 		}
 		token, err := jwtService.ValidateToken(authHeader)
+		fmt.Println(token)
 		if token.Valid {
 			claims := token.Claims.(jwt.MapClaims)
 			log.Println("Claim[user_id]: ", claims["user_id"])
