@@ -42,7 +42,6 @@ func (s *articleService) DeleteArticle(articleId int) entity.Article {
 
 // 更新文章
 func (s *articleService) UpdateArticle(id int, article dto.ArticleUpdateDto) entity.Article {
-
 	articleDto := entity.Article{}
 	err := smapping.FillStruct(&articleDto, smapping.MapFields(&article))
 	if err != nil {

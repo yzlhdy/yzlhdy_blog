@@ -31,13 +31,12 @@ func NewAuthController(authService service.AuthService, jwtService service.JwtSe
 
 func (c *authController) Login(ctx *gin.Context) {
 	var loginForm dto.LoginDTO
-
 	ctx.ShouldBind(&loginForm)
 	valid, err := helper.BindAndValid(ctx, &loginForm)
 	fmt.Println(valid)
 	if !valid {
 		response := helper.BuildErrorResponse(403, "参数错误", helper.EmptyObj{}, err)
-		ctx.JSON(http.StatusBadRequest, response)
+		ctx.JSON(http.StatusOK, response)
 		return
 	}
 	res := c.authService.VerifyCredential(loginForm.Email, loginForm.Password)
@@ -50,7 +49,7 @@ func (c *authController) Login(ctx *gin.Context) {
 		return
 	}
 	response := helper.BuildErrorResponse(401, "用户名或密码错误", helper.EmptyObj{}, err)
-	ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
+	ctx.AbortWithStatusJSON(http.StatusOK, response)
 }
 
 func (c *authController) Register(ctx *gin.Context) {

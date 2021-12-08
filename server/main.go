@@ -32,16 +32,19 @@ var (
 
 	// article
 	articleController controller.ArticleController = controller.NewArticleController(articleService)
+	uploadController  controller.UploadController  = controller.NewUploadController()
 )
 
 func main() {
 	serviceHost := os.Getenv("SERVICE_HOST")
 	defer config.CloseDatabase(db)
 	route := gin.New()
+	route.Use(middleware.Cors())
 	route.Use(gin.Logger())
 	route.Use(gin.Recovery())
 	route.Use(middleware.Translations())
 	route.Use(middleware.Loggers())
+	route.MaxMultipartMemory = 8 << 20 // 8 MiB
 	authRoutes := route.Group("api/auth")
 	{
 		authRoutes.POST("/login", authController.Login)
@@ -70,6 +73,11 @@ func main() {
 		articleRoutes.POST("", articleController.CreateArticle)
 		articleRoutes.PUT("/:id", articleController.UpdateArticle)
 		articleRoutes.DELETE("/:id", articleController.DeleteArticle)
+	}
+	// 上传
+	uploadRoutes := route.Group("api/upload")
+	{
+		uploadRoutes.POST("/image", uploadController.Upload)
 	}
 	route.Run(":" + serviceHost)
 }
