@@ -15,6 +15,7 @@ type ArticleController interface {
 	DeleteArticle(ctx *gin.Context)
 	UpdateArticle(ctx *gin.Context)
 	AllArticle(ctx *gin.Context)
+	AllArticleByClassification(ctx *gin.Context)
 }
 
 type articleController struct {
@@ -78,5 +79,18 @@ func (c *articleController) AllArticle(ctx *gin.Context) {
 	res, total := c.articleService.AllArticle(page, limit)
 	response := helper.BuildResponseAll(200, "success", res, total, nil)
 	ctx.JSON(http.StatusOK, response)
+}
 
+// 获取分类下的所有文章
+func (c *articleController) AllArticleByClassification(ctx *gin.Context) {
+	page, _ := strconv.Atoi(ctx.Param("page"))
+	limit, _ := strconv.Atoi(ctx.Param("limit"))
+	classification, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		response := helper.BuildErrorResponse(400, "参数错误", helper.EmptyObj{}, err)
+		ctx.JSON(http.StatusBadRequest, response)
+	}
+	res, total := c.articleService.AllArticleByClassification(classification, page, limit)
+	response := helper.BuildResponseAll(200, "success", res, total, nil)
+	ctx.JSON(http.StatusOK, response)
 }

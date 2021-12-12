@@ -14,6 +14,7 @@ type ArticleService interface {
 	UpdateArticle(id int, article dto.ArticleUpdateDto) entity.Article
 	AllArticle(page int, limit int) ([]entity.Article, int64)
 	FndArticle(id int) entity.Article
+	AllArticleByClassification(classificationId int, page int, limit int) ([]entity.Article, int64)
 }
 
 type articleService struct {
@@ -59,4 +60,7 @@ func (s *articleService) AllArticle(page int, limit int) ([]entity.Article, int6
 // 查询文章
 func (s *articleService) FndArticle(id int) entity.Article {
 	return s.articleRepo.FndArticle(id)
+}
+func (s *articleService) AllArticleByClassification(classificationId int, page int, limit int) ([]entity.Article, int64) {
+	return s.articleRepo.AllArticleByClassification(classificationId, page, limit)
 }

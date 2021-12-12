@@ -12,6 +12,7 @@ type ArticleRepository interface {
 	UpdateArticle(id int, article entity.Article) entity.Article
 	AllArticle(page int, limit int) ([]entity.Article, int64)
 	FndArticle(id int) entity.Article
+	AllArticleByClassification(classificationId int, page int, limit int) ([]entity.Article, int64)
 }
 
 type articleRepository struct {
@@ -60,4 +61,11 @@ func (r *articleRepository) FndArticle(id int) entity.Article {
 	var article entity.Article
 	r.connection.First(&article, id)
 	return article
+}
+
+func (r *articleRepository) AllArticleByClassification(classificationId int, page int, limit int) ([]entity.Article, int64) {
+	var articles []entity.Article
+	var count int64
+	r.connection.Preload("Classification").Offset((page-1)*limit).Limit(limit).Where("cid = ?", classificationId).Find(&articles).Count(&count)
+	return articles, count
 }

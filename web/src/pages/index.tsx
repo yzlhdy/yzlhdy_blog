@@ -11,7 +11,7 @@ const Home: NextPage = () => {
           Yzlhdy的博客
         </Heading >
         <Heading as="h6" textAlign="center" fontSize="14" my="10">
-          开发人员和设计师收集免费的设计工具和资源
+          为制造商、开发人员和设计师收集免费的设计工具和资源
         </Heading>
       </Box>
       <Box w="container.xl" >

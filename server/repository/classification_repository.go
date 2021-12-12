@@ -11,12 +11,6 @@ type classificationRepository struct {
 	connection *gorm.DB
 }
 
-func NewClassificationRepository(connection *gorm.DB) ClassificationRepository {
-	return &classificationRepository{
-		connection: connection,
-	}
-}
-
 type ClassificationRepository interface {
 	InsertClassification(imitation entity.Classification) entity.Classification
 	FindClassificationById(id int) entity.Classification
@@ -25,6 +19,11 @@ type ClassificationRepository interface {
 	AllClassification(page int, limit int) ([]entity.Classification, int64)
 }
 
+func NewClassificationRepository(connection *gorm.DB) ClassificationRepository {
+	return &classificationRepository{
+		connection: connection,
+	}
+}
 func (db *classificationRepository) InsertClassification(imitation entity.Classification) entity.Classification {
 	db.connection.Save(&imitation)
 	return imitation

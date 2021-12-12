@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, GridItem, VStack, Avatar, Heading, Stack, Button, Link } from '@chakra-ui/react';
 import { GoOctoface } from 'react-icons/go'
+import RightMain from './RightMain';
 
 
 const HomeMain: React.FC = () => {
@@ -16,14 +17,20 @@ const HomeMain: React.FC = () => {
 						<Heading py={4}>Yzlhdy</Heading>
 						<Heading as="p" fontSize="14px">闻道有先后,术业有专攻,如是而已</Heading>
 					</VStack>
-					<Stack direction='row' spacing={4}>
+					<Stack direction='row' spacing={4} lineHeight="20px" display="flex" flexDirection="column">
 						<Box display="flex" alignItems="center" justifyContent="center" w="full">
-							<GoOctoface size={24} color="pink" />
+							<GoOctoface size={16} color="pink" />
+							<Button as={Link} variant="link">https://github.com/yzlhdy</Button>
+						</Box>
+						<Box display="flex" alignItems="center" justifyContent="center" w="full">
+							<GoOctoface size={16} color="pink" />
 							<Button as={Link} variant="link">https://github.com/yzlhdy</Button>
 						</Box>
 					</Stack>
 				</GridItem>
-				<GridItem colSpan={4} bg='papayawhip' >2</GridItem>
+				<GridItem colSpan={4} bg='papayawhip' >
+					<RightMain />
+				</GridItem>
 			</Grid>
 		</Box>
 	);

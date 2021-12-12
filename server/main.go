@@ -20,7 +20,7 @@ var (
 	jwtService      service.JwtService                  = service.NewJwtService()
 	authService     service.AuthService                 = service.NewAuthService(userRepository)
 	classRepository repository.ClassificationRepository = repository.NewClassificationRepository(db)
-	classiService   service.ClassificationService       = service.NewClassificationService(classRepository)
+	classisService  service.ClassificationService       = service.NewClassificationService(classRepository)
 	// article
 	articleRepo    repository.ArticleRepository = repository.NewArticleRepository(db)
 	articleService service.ArticleService       = service.NewArticleService(articleRepo)
@@ -28,7 +28,7 @@ var (
 	// controller
 	authController  controller.AuthController           = controller.NewAuthController(authService, jwtService)
 	userController  controller.UserController           = controller.NewUserController(userService, jwtService)
-	classController controller.ClassificationController = controller.NewClassificationController(classiService)
+	classController controller.ClassificationController = controller.NewClassificationController(classisService)
 
 	// article
 	articleController controller.ArticleController = controller.NewArticleController(articleService)
@@ -43,13 +43,14 @@ func main() {
 	route.Use(gin.Logger())
 	route.Use(gin.Recovery())
 	route.Use(middleware.Translations())
-	route.Use(middleware.Loggers())
+	// route.Use(middleware.Loggers())
 	route.MaxMultipartMemory = 8 << 20 // 8 MiB
 	authRoutes := route.Group("api/auth")
 	{
 		authRoutes.POST("/login", authController.Login)
 		authRoutes.POST("/register", authController.Register)
 	}
+
 	userRoutes := route.Group("api/user", middleware.AuthorizeJWT(jwtService))
 	{
 		userRoutes.GET("/", userController.FindUser)
@@ -73,6 +74,7 @@ func main() {
 		articleRoutes.POST("", articleController.CreateArticle)
 		articleRoutes.PUT("/:id", articleController.UpdateArticle)
 		articleRoutes.DELETE("/:id", articleController.DeleteArticle)
+		articleRoutes.GET("/info/:id", articleController.AllArticleByClassification)
 	}
 	// 上传
 	uploadRoutes := route.Group("api/upload")
