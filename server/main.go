@@ -33,6 +33,14 @@ var (
 	// article
 	articleController controller.ArticleController = controller.NewArticleController(articleService)
 	uploadController  controller.UploadController  = controller.NewUploadController()
+	//  资源分类
+	resourceRepository repository.RecategoryRepository = repository.NewRecategoryRepository(db)
+	resourceService    service.RecategoryService       = service.NewRecategoryService(resourceRepository)
+	resoureController  controller.ResourceController   = controller.NewResourceController(resourceService)
+	// 资源
+	resourcesRepository repository.ResourcesRepository = repository.NewResourcesRepository(db)
+	resourcesService    service.ResourcesService       = service.NewResourcesService(resourcesRepository)
+	resourcesController controller.ResourcesController = controller.NewResourcesController(resourcesService)
 )
 
 func main() {
@@ -81,5 +89,20 @@ func main() {
 	{
 		uploadRoutes.POST("/image", uploadController.Upload)
 	}
+	// 资源分类
+	resourceRoutes := route.Group("api/resource")
+	{
+		resourceRoutes.GET("/list", resoureController.GetAll)
+		resourceRoutes.POST("", resoureController.Create)
+		resourceRoutes.PUT("/:id", resoureController.Update)
+		resourceRoutes.DELETE("/:id", resoureController.Delete)
+		resourceRoutes.GET("/:id", resoureController.GetByID)
+	}
+	// 资源列表
+	resourcesRoutes := route.Group("api/resources")
+	{
+		resourcesRoutes.GET("/list", resourcesController.GetResources)
+	}
+
 	route.Run(":" + serviceHost)
 }

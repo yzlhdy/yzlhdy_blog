@@ -35,12 +35,12 @@ func (c *classificationController) InsertClassification(ctx *gin.Context) {
 	valide, err := helper.BindAndValid(ctx, &createDto)
 	if !valide {
 		response := helper.BuildErrorResponse(400, "参数错误", helper.EmptyObj{}, err)
-		ctx.JSON(response.Status, response)
+		ctx.JSON(http.StatusOK, response)
 		return
 	}
 	result := c.classiService.InsertClassification(createDto)
 	response := helper.BuildResponse(200, "success", result)
-	ctx.JSON(response.Status, response)
+	ctx.JSON(http.StatusOK, response)
 }
 
 // @Summary 根据id查询分类
@@ -62,7 +62,7 @@ func (c *classificationController) UpdateClassification(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		response := helper.BuildErrorResponse(400, "参数错误", helper.EmptyObj{}, err)
-		ctx.JSON(response.Status, response)
+		ctx.JSON(http.StatusOK, response)
 		return
 
 	}
