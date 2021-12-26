@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"yzlhdy_blog/dto"
@@ -49,8 +50,9 @@ func (s *resourcesController) GetResource(ctx *gin.Context) {
 func (s *resourcesController) CreateResource(ctx *gin.Context) {
 	var createResources dto.CreateResourcesDto
 	validate, err := helper.BindAndValid(ctx, &createResources)
+	fmt.Println(createResources)
 	if !validate {
-		response := helper.BuildErrorResponse(400, "参数错误", helper.EmptyObj{}, err.Error())
+		response := helper.BuildErrorResponse(400, "参数错误", helper.EmptyObj{}, err)
 		ctx.JSON(http.StatusOK, response)
 		return
 	}

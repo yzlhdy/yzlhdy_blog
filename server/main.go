@@ -102,6 +102,11 @@ func main() {
 	resourcesRoutes := route.Group("api/resources")
 	{
 		resourcesRoutes.GET("/list", resourcesController.GetResources)
+		resourcesRoutes.GET("/:id", resourcesController.GetResource)
+		resourcesRoutes.POST("", resourcesController.CreateResource)
+		resourcesRoutes.PUT("/:id", resourcesController.UpdateResource)
+		resourcesRoutes.DELETE("/:id", resourcesController.DeleteResource)
+
 	}
 
 	route.Run(":" + serviceHost)

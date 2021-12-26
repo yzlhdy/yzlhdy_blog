@@ -33,7 +33,7 @@ func (r *resourcesRepository) GetResources(page int, limit int) ([]entity.Resour
 		limit = 10
 	}
 	r.db.Model(&entity.Resources{}).Count(&count)
-	r.db.Limit(limit).Offset((page - 1) * limit).Find(&resources)
+	r.db.Preload("ResourceCategory").Limit(limit).Offset((page - 1) * limit).Find(&resources)
 	return resources, count
 }
 
